@@ -79,7 +79,7 @@
   /* Световой блик, едущий по силуэту кристалла */
   .gem-shine{
     position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden;
-    clip-path:polygon(30% 6%, 70% 6%, 80% 40%, 50% 96%, 20% 40%);
+    clip-path:polygon(26% 12%, 74% 12%, 90% 44%, 50% 84%, 10% 44%);
   }
   .gem-shine::before{
     content:""; position:absolute; top:-20%; left:0; width:60%; height:140%;
@@ -180,12 +180,12 @@
     <div class="gem-wrap">
       <span class="gem-glow"></span>
       <svg class="gem" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="20,40 80,40 50,96" fill="#348ee0"/>
-        <polygon points="30,6 70,6 80,40 20,40" fill="#3da5ff"/>
-        <polygon class="facet-top" points="30,6 70,6 50,40" fill="#7cc4ff"/>
-        <polygon points="30,6 50,40 20,40" fill="#3da5ff"/>
-        <polygon points="70,6 80,40 50,40" fill="#3da5ff"/>
-        <polygon points="20,40 50,40 50,96" fill="#2f86d6"/>
+        <polygon points="10,44 90,44 50,84" fill="#348ee0"/>
+        <polygon points="26,12 74,12 90,44 10,44" fill="#3da5ff"/>
+        <polygon class="facet-top" points="26,12 74,12 50,44" fill="#7cc4ff"/>
+        <polygon points="26,12 50,44 10,44" fill="#3da5ff"/>
+        <polygon points="74,12 90,44 50,44" fill="#3da5ff"/>
+        <polygon points="10,44 50,44 50,84" fill="#2f86d6"/>
       </svg>
       <span class="gem-shine"></span>
       <i class="spark s1"></i>
