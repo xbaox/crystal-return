@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="dark">
+<!-- Красит chrome браузера (статус-бар iOS, адресную строку, верх/низ
+     in-app браузера Telegram) в бренд-навигатор. Берём верхний тон градиента
+     (--bg-0). Где клиент это уважает — кромки больше не чёрные. -->
+<meta name="theme-color" content="#0e1621">
 <title>Crystal VPN — возврат в бот</title>
 
 <!--
   Страница-мост для возврата после оплаты ЮKassa (Crystal VPN, Этап 1;
   Этап 5: единый бренд — фирменные шрифты, чистый край без синей полосы;
+  фикс кромок: фон на html + meta theme-color + safe-area-падинги — больше
+  нет чёрных полос сверху/снизу под статус-баром и тулбаром браузера;
   UX §3: текст согласован с фиксом A3 — НЕ обещаем жёстко «ключ придёт сам»,
   ведём к кнопке «🔄 Проверить оплату» в боте; токены цвета = chart_theme.py).
   Кнопка банка «Вернуться в магазин» ведёт сюда; страница сразу пытается
@@ -41,15 +47,27 @@
     --accent:#3da5ff; --accent-2:#7cc4ff; --ink:#04243f;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; position:relative; overflow:hidden;
-    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--text);
+  html{
+    height:100%;
+    /* Фон вешаем на КОРЕНЬ (html), а не только на body. Браузер растягивает
+       фон корневого элемента на весь canvas — под статус-бар, под тулбар
+       in-app браузера, в safe-area и в зону overscroll. Поэтому кромки
+       красятся в наш навигатор, а не в системный чёрный. Градиент тот же,
+       что был у body, так что стыка не видно. */
     background:
       radial-gradient(1200px 600px at 50% -12%, #1b2a3a 0%, rgba(27,42,58,0) 58%),
       linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 100%);
-    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  body{
+    margin:0; position:relative; overflow:hidden; min-height:100%;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);
+    background:transparent;            /* фон отдан html — иначе чёрные кромки */
+    display:flex; align-items:center; justify-content:center;
+    /* отступ не меньше 24px, но уважает «чёлку» и home-индикатор:
+       контент не лезет под системные зоны, а фон под ними уже залит */
+    padding:max(24px, env(safe-area-inset-top))  max(24px, env(safe-area-inset-right))
+            max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
     -webkit-font-smoothing:antialiased;
   }
   /* Амбиентное «сияние», медленно дрейфующее за карточкой */
