@@ -8,7 +8,10 @@
 <title>Crystal VPN — возврат в бот</title>
 
 <!--
-  Страница-мост для возврата после оплаты ЮKassa (Crystal VPN, Этап 1).
+  Страница-мост для возврата после оплаты ЮKassa (Crystal VPN, Этап 1;
+  Этап 5: единый бренд — фирменные шрифты, чистый край без синей полосы;
+  UX §3: текст согласован с фиксом A3 — НЕ обещаем жёстко «ключ придёт сам»,
+  ведём к кнопке «🔄 Проверить оплату» в боте; токены цвета = chart_theme.py).
   Кнопка банка «Вернуться в магазин» ведёт сюда; страница сразу пытается
   открыть приложение через tg://resolve, а если не вышло за ~1.4 с — показывает
   крупную кнопку и успокаивающий текст. Только HTML/CSS/JS, без внешних запросов
@@ -20,7 +23,18 @@
   nginx). Подробности — в сообщении ассистента, не в этом файле.
 -->
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
+  /* Единый бренд-токен с ботом: значения = utils/chart_theme.py (та же палитра,
+     что у графиков и картинки-чека — весь визуал читается как один бренд):
+       --bg-0   #0e1621 = BG          --card-1  #17212b = PLOT_BG
+       --border #243446 = SPINE       --text    #ffffff = TEXT
+       --muted  #8fa3b5 = TEXT_MUTED  --accent  #3da5ff = ACCENT
+       --accent-2 #7cc4ff = ACCENT_LIGHT (светлая грань кристалла)
+     Меняешь палитру бота — поправь и здесь (и наоборот). */
   :root{
     --bg-0:#0e1621; --bg-1:#0b121b; --card-0:#1a2734; --card-1:#17212b;
     --border:#243446; --text:#ffffff; --muted:#8fa3b5;
@@ -30,7 +44,7 @@
   html,body{height:100%}
   body{
     margin:0; position:relative; overflow:hidden;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     color:var(--text);
     background:
       radial-gradient(1200px 600px at 50% -12%, #1b2a3a 0%, rgba(27,42,58,0) 58%),
@@ -51,15 +65,12 @@
     background:linear-gradient(180deg, var(--card-0) 0%, var(--card-1) 100%);
     border:1px solid var(--border); border-radius:24px;
     padding:40px 28px 28px; text-align:center; overflow:hidden;
-    box-shadow:0 24px 60px rgba(0,0,0,.45);
+    box-shadow:inset 0 1px 0 rgba(124,196,255,.16), 0 24px 60px rgba(0,0,0,.45);
     animation:cardIn .65s cubic-bezier(.2,.7,.2,1) both;
   }
-  /* Верхняя акцентная полоса с бегущим бликом */
-  .card::before{
-    content:""; position:absolute; left:0; right:0; top:0; height:5px;
-    background:linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 45%, var(--accent) 90%);
-    background-size:220% 100%; animation:barShimmer 3.6s linear infinite;
-  }
+  /* Чистый симметричный край: вместо синей полосы поверх рамки — лёгкий
+     внутренний световой блик по верхнему краю (inset, уважает скругление со
+     всех сторон). Тот же приём, что у карточки чека и доков. */
 
   /* --- Гем: фирменный кристалл-герой со свечением, бликом и искрами --- */
   .gem-wrap{
@@ -99,12 +110,14 @@
 
   .badge{
     display:inline-flex; align-items:center; gap:8px;
-    font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--accent-2);
+    font-family:"JetBrains Mono",monospace;
+    font-size:12.5px; font-weight:500; letter-spacing:.02em; color:var(--accent-2);
     background:rgba(61,165,255,.10); border:1px solid rgba(61,165,255,.30);
     padding:6px 12px; border-radius:999px; margin-bottom:16px;
     animation:riseIn .55s ease both; animation-delay:.18s;
   }
   h1{
+    font-family:"Space Grotesk","Inter",sans-serif;
     font-size:23px; line-height:1.25; margin:0 0 10px; font-weight:700;
     animation:riseIn .55s ease both; animation-delay:.26s;
   }
@@ -146,7 +159,7 @@
   #cta.ready::after{animation:btnShine 1.05s ease-out .05s 1}
 
   .foot{
-    margin-top:20px; font-size:12.5px; color:#5e7387;
+    margin-top:20px; font-family:"JetBrains Mono",monospace; font-size:12px; color:#5e7387;
     animation:riseIn .55s ease both; animation-delay:.58s;
   }
   .foot b{color:#9fb3c5; font-weight:600}
@@ -157,7 +170,6 @@
   }
   @keyframes cardIn{from{opacity:0; transform:translateY(18px) scale(.985)} to{opacity:1; transform:none}}
   @keyframes riseIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
-  @keyframes barShimmer{to{background-position:220% 0}}
   @keyframes gemPop{from{opacity:0; transform:scale(.78)} to{opacity:1; transform:scale(1)}}
   @keyframes gemFloat{0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)}}
   @keyframes gemGlow{0%,100%{opacity:.45; transform:scale(.92)} 50%{opacity:.85; transform:scale(1.08)}}
@@ -195,9 +207,9 @@
 
     <div class="badge">💎 Crystal VPN</div>
 
-    <h1>Оплата прошла ✓</h1>
-    <p class="lead">Ключ уже летит в чат. Открываем Telegram, чтобы вернуть тебя
-       в бота — вводить ничего не нужно.</p>
+    <h1>Возвращаемся в Telegram…</h1>
+    <p class="lead">Если оплата прошла — ключ придёт в чат. Не пришёл?
+       Открой бота и жми «🔄 Проверить оплату».</p>
 
     <div class="hint" id="hint">
       <span class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i></span>
