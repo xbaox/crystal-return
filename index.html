@@ -148,6 +148,9 @@
     font-size:15.5px; line-height:1.55; color:var(--muted); margin:0 auto 22px; max-width:330px;
     animation:riseIn .55s ease both; animation-delay:.34s;
   }
+  /* Вторая строка адресована тому, кто попал сюда по чужой ссылке, а не
+     после своей оплаты, — поэтому тише первой. */
+  .lead.calm{font-size:14px; margin-top:-14px; opacity:.85}
   .hint{
     display:flex; align-items:center; justify-content:center; gap:11px;
     min-height:26px; margin-bottom:18px;
@@ -233,6 +236,8 @@
     <h1>Возвращаемся в Telegram…</h1>
     <p class="lead">Если оплата прошла — ключ придёт в чат. Не пришёл?
        Открой бота и жми «🔄 Проверить оплату».</p>
+    <p class="lead calm">А если ты ничего не оплачивал — ничего делать не нужно.
+       Эта страница ничего не списывает и ни о чём не просит.</p>
 
     <div class="hint" id="hint">
       <span class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i></span>
